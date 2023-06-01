@@ -1,0 +1,78 @@
+body{
+    background-color: #777;
+}
+main{
+    font-family: Verdana, sans-serif;
+    width: 90%;
+    margin: auto;
+}
+.flex-col{
+    display: flex;
+    flex-direction: column;
+}
+.update-form{
+    position: absolute;
+    top: 2%;
+    right: 1%;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+.deals{
+    margin-top: 55px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+.flex-row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.deal-row{
+    position: relative;
+}
+
+.deal-row::after{
+    content: "";
+    background: rgb(0,0,0);
+    background: linear-gradient(79deg, rgba(0,0,0,0) 5%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 95%);
+    width: 90%;
+    height: 1px;
+    position: absolute;
+    bottom: 0;
+    left: 5%;
+}
+
+.margin-1{
+    margin: 1rem;
+}
+.margin-left{
+    margin-left: 1rem;
+}
+.margin-half{
+    margin: .5rem;
+}
+.pad-1{
+    padding: 1rem;
+}
+.favorite{
+    background-color: #fde603;
+}
+.store{
+    font-weight: bold;
+}
+.store img{
+    width: 20px;
+}
+
+button{
+    background: none;
+    border: none;
+}
+a img,
+button img{
+    width: 50px;
+}

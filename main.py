@@ -3,27 +3,34 @@ import re
 
 import requests as requests
 from bs4 import BeautifulSoup
+from threading import Thread
 
+from DB import DB
 
 # Press ⌃R to execute it or replace it with your code.
 
 
-def get_items_publix(soup):
+deals = []
+
+def get_items_publix(promo_id, x):
+    global deals
+
+
+    url = f'https://accessibleweeklyad.publix.com/PublixAccessibility/BrowseByPage?PromotionID={promo_id}&PromotionViewMode=1&StoreID=2729424&PageNumber={x}&BreadCrumb=Weekly+Ad&SneakPeek=N'
+    r = requests.get(url)
+    soup = BeautifulSoup(r.content, features="html.parser")
     units = soup.select(".unitB")
 
-    this_pages_deals = []
     for unit in units:
         title = unit.findChild("div",{"class":"title"}).text.strip()
         deal = unit.findChild("div",{"class":"deal"}).text.strip()
-        this_pages_deals.append({"store":"Publix", "title":title, "deal":deal})
-    return this_pages_deals
+        deals.append({"store":"Publix", "title":title, "deal":deal})
 
 
 def scrape_publix():
     url = 'https://accessibleweeklyad.publix.com/PublixAccessibility/BrowseByPage?storeid=2729424'
 
     r = requests.get(url)
-    print(r.is_redirect)
     soup = BeautifulSoup(r.content, features="html.parser")
 
 
@@ -34,70 +41,75 @@ def scrape_publix():
 
     a = [x['href'] for x in soup.findAll(href=True)]
     promo_id = None
+
     for link in a:
         promo_id = re.findall("PromotionID=(\d+)", link)
         if promo_id:
+            promo_id = promo_id[0]
             break
 
+    threads = []
 
-    deals = get_items_publix(soup)
+    for x in range(1, page_count+1):
+        threads.append(Thread(target=get_items_publix, args=(promo_id, x,)))
 
-    for x in range(2, page_count+1):
-        url = f'https://accessibleweeklyad.publix.com/PublixAccessibility/BrowseByPage?PromotionID={promo_id}&PromotionViewMode=1&StoreID=2729424&PageNumber=3&BreadCrumb=Weekly+Ad&SneakPeek=N'
-        soup = BeautifulSoup(r.content, features="html.parser")
-        deals.extend(get_items_publix(soup))
-
-    return deals
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
 
 
-def get_items_food_city(soup):
+def get_items_food_city(page_count):
+    global deals
+
+
+    url = f'https://www.foodcity.com/circulars/weekly/716/?searchDisplay=grid&page={page_count}'
+    r = requests.get(url)
+    soup = BeautifulSoup(r.content, features="html.parser")
     cards = soup.select(".card-text")
-
-    this_pages_deals = []
 
     for card in cards:
         deal = card.findChild("span",{"class":"tile-item__product__price"}).attrs['data-price']
         title = card.findChild("div",{"class":"tile-item__product__title"}).get_text(" ",strip=True)
 
-        this_pages_deals.append({"store":"FoodCity", "title":title, "deal":deal})
+        deals.append({"store":"FoodCity", "title":title, "deal":deal})
 
-    return this_pages_deals
 
 def scrape_food_city():
-    url = 'https://www.foodcity.com/index.php?vica=ctl_circulars&vicb=showWeeklyCirculars&vicc=p&StoreNum=716'
+    url = 'https://www.foodcity.com/circulars/weekly/716/?searchDisplay=grid'
     r = requests.get(url)
     soup = BeautifulSoup(r.content,features="html.parser")
 
     item_count = soup.select(".search-filters__results-count .text-secondary")
     item_count = int(item_count[0].text)
 
-    deals = get_items_food_city(soup)
+    threads = []
 
-    page_count = 1
-    while len(deals) < item_count:
-        url = f'https://www.foodcity.com/index.php?vica=ctl_circulars&vicb=showWeeklyCirculars&vicc=p&StoreNum=716&page={page_count}'
-        r = requests.get(url)
-        soup = BeautifulSoup(r.content, features="html.parser")
-        deals.extend(get_items_food_city(soup))
-
+    page_count = item_count // 12
+    if item_count % 12 > 0:
         page_count += 1
 
-    return deals
+    for x in range(1,page_count+1):
+        threads.append(Thread(target=get_items_food_city, args=(x,)))
+        page_count += 1
+
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
+
 
 
 def aldi_get_items(json):
+    global deals
     list = json['data']['listings']['list']
 
-    deals = []
 
     for item in list:
         if 'Non-Food' not in [x['name'] for x in item['departments']]:
             deals.append({"store": "ALDI", "title": item['title'], "deal": item['deal']+(' '+item['priceQualifier'] if item['priceQualifier'] else '')})
 
-    return deals
-
 def aldi_graphql():
-    deals = []
     url = 'https://graphql-cdn-slplatform.liquidus.net'
 
     data = {
@@ -118,15 +130,31 @@ def aldi_graphql():
     }
 
     r = requests.post(url, json=data)
-    return aldi_get_items(r.json())
+    aldi_get_items(r.json())
+
+
+def update_deals():
+    scrape_food_city()
+    scrape_publix()
+    aldi_graphql()
+
+    db = DB()
+
+    db.clean_old_deals()
+
+    for deal in deals:
+        print(deal)
+        db.insert(deal['store'], deal['title'], deal['deal'])
+
+def get_existing_deals():
+    db = DB()
+
+    return db.get_existing_deals()
 
 
 
 if __name__ == '__main__':
-    deals = []
-    deals.extend(scrape_publix())
-    deals.extend(scrape_food_city())
-    deals.extend(aldi_graphql())
+    update_deals()
 
     for deal in deals:
         print(deal)

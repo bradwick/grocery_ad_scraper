@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Deal Finder</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+</head>
+<body>
+<main>
+    <div class="update-form flex-row">
+    <form class="flex-row" action="/update" method="post">
+        <button type="submit"><img src="{{url_for('static', filename='img/refresh.png')}}" alt="Update"></button>
+        <a href="/" ><img src="{{url_for('static', filename='img/home.png')}}" alt="Home"></a>
+    </form>
+    <form action="/remove-all-saved" method="post">
+        <button type="submit"><img src="{{url_for('static', filename='img/trash.png')}}" alt="Clear"></button>
+    </form>
+    </div>
+<div class="flex-col deals">
+    {% for deal in deals %}
+    <div class="flex-row margin-half deal-row" id="{{ deal.id }}">
+        <span class="margin-left store">{{ deal.store }}</span>
+        <span>{{ deal.item }}</span>
+        <span class="flex-row">
+            <span>{{ deal.price }}</span>
+            <form action="/add" method="post">
+                <input type="hidden" name="id" value="{{ deal.id }}">
+                <button class="pad-1 margin-half" type="submit"><img src="{{url_for('static', filename='img/remove.png')}}" alt="Remove"></button>
+            </form>
+        </span>
+    </div>
+    {% endfor %}
+</div>
+</main>
+</body>
+</html>

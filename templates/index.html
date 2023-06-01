@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Deal Finder</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+</head>
+<body>
+<main>
+    <form class="update-form" action="/update" method="post">
+        <button type="submit"><img src="{{url_for('static', filename='img/refresh.png')}}" alt="Update"></button>
+        <a href="/list" ><img src="{{url_for('static', filename='img/cart.png')}}" alt="List"></a>
+    </form>
+<div class="flex-col deals">
+    {% for deal in deals %}
+    <div class="flex-row margin-half deal-row" id="{{ deal.id }}">
+        <span class="margin-left store">{% if deal.favorite -%}<img src="{{url_for('static', filename='img/pin.png')}}" alt="Favorite">{% endif %}{{ deal.store }}</span>
+        <span>{{ deal.item }}</span>
+        <span class="flex-row">
+            <span>{{ deal.price }}</span>
+            <form action="/hide" method="post">
+                <input type="hidden" name="id" value="{{ deal.id }}">
+                <button class="pad-1 margin-half" type="submit"><img src="{{url_for('static', filename='img/hide.png')}}" alt="Hide"></button>
+            </form>
+            <form action="/favorite" method="post">
+                <input type="hidden" name="id" value="{{ deal.id }}">
+                <button class="pad-1 margin-half" type="submit">{% if deal.favorite -%}<img src="{{url_for('static', filename='img/unpin.png')}}" alt="Un-Favorite">{%- else -%}<img src="{{url_for('static', filename='img/pin.png')}}" alt="Favorite">{%- endif -%}</button>
+            </form>
+            <form action="/add" method="post">
+                <input type="hidden" name="id" value="{{ deal.id }}">
+                <button class="pad-1 margin-half" type="submit">{% if deal.save -%}<img src="{{url_for('static', filename='img/remove.png')}}" alt="Un-Save">{%- else -%}<img src="{{url_for('static', filename='img/add.png')}}" alt="Save">{%- endif -%}</button>
+            </form>
+        </span>
+    </div>
+    {% endfor %}
+</div>
+</main>
+</body>
+</html>
