@@ -50,4 +50,4 @@ def add():
 
 
 if __name__ == '__main__':
-    app.run(host='localhost', port=8850)
+    app.run(host='*', port=8850)
