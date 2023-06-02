@@ -8,6 +8,7 @@ listenerOnSelector(".hide", "click", e =>{
     const id = e.target.closest("button").dataset.id
     fetch("/hide", {
         method: "POST",
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify({id:id})
     })
     e.target.closest(".deal-row").classList.add("hidden")
@@ -18,6 +19,7 @@ listenerOnSelector(".pin", "click", e =>{
     const id = button.dataset.id
     fetch("/favorite", {
         method: "POST",
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify({id:id})
     })
     if (button.alt === "Un-Favorite")
@@ -30,6 +32,7 @@ listenerOnSelector(".save", "click", e =>{
     const id = e.target.closest("button").dataset.id
     fetch("/add", {
         method: "POST",
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify({id:id})
     })
     if (button.alt === "Un-Save")
