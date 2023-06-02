@@ -25,7 +25,7 @@ def update():
 @app.route('/hide', methods=['POST'])
 def hide():
     db = DB()
-    id = request.values['id']
+    id = request.json.get('id')
     db.toggle_hide(id)
     next_id = db.get_next_visible_deal_id(id)['id']
     return redirect(f"/#{next_id}", code=302)
@@ -33,7 +33,7 @@ def hide():
 @app.route('/favorite', methods=['POST'])
 def favorite():
     db = DB()
-    id = request.values['id']
+    id = request.json.get('id')
     db.toggle_favorite(id)
     next_id = db.get_next_visible_deal_id(id)['id']
     return redirect(f"/#{next_id}", code=302)
@@ -42,7 +42,7 @@ def favorite():
 @app.route('/add', methods=['POST'])
 def add():
     db = DB()
-    id = request.values['id']
+    id = request.json.get('id')
     db.toggle_save(id)
     next_id = db.get_next_visible_deal_id(id)['id']
     return redirect(f"/#{next_id}", code=302)
