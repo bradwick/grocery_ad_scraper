@@ -72,15 +72,22 @@ main{
 button{
     background: none;
     border: none;
-    transition: transform .2s;
+    transition: transform .1s;
 }
 
 button:hover{
     cursor: pointer;
-    transform: translate(0, -10px);
+    transform: translate(0, -5px);
 }
 
 a img,
 button img{
     width: 50px;
+}
+
+.hidden{
+    display: none;
+}
+.hidden:after{
+    display: none;
 }
