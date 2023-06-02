@@ -43,7 +43,7 @@ def scrape_publix():
     promo_id = None
 
     for link in a:
-        promo_id = re.findall("PromotionID=(\d+)", link)
+        promo_id = re.findall("PromotionID=(\d+).*Weekly", link)
         if promo_id:
             promo_id = promo_id[0]
             break
@@ -104,10 +104,10 @@ def aldi_get_items(json):
     global deals
     list = json['data']['listings']['list']
 
-
-    for item in list:
-        if 'Non-Food' not in [x['name'] for x in item['departments']]:
-            deals.append({"store": "ALDI", "title": item['title'], "deal": item['deal']+(' '+item['priceQualifier'] if item['priceQualifier'] else '')})
+    if json:
+        for item in list:
+            if 'Non-Food' not in [x['name'] for x in item['departments']]:
+                deals.append({"store": "ALDI", "title": item['title'], "deal": item['deal']+(' '+item['priceQualifier'] if item['priceQualifier'] else '')})
 
 def aldi_graphql():
     url = 'https://graphql-cdn-slplatform.liquidus.net'
@@ -155,7 +155,4 @@ def get_existing_deals():
 
 if __name__ == '__main__':
     update_deals()
-
-    for deal in deals:
-        print(deal)
 
