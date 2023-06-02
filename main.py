@@ -134,9 +134,15 @@ def aldi_graphql():
 
 
 def update_deals():
-    scrape_food_city()
-    scrape_publix()
-    aldi_graphql()
+    threads = []
+    threads.append(Thread(target=scrape_food_city))
+    threads.append(Thread(target=scrape_publix))
+    threads.append(Thread(target=aldi_graphql))
+
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
 
     db = DB()
 
