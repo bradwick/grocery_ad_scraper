@@ -22,10 +22,13 @@ listenerOnSelector(".pin", "click", e =>{
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({id:id})
     })
-    if (button.alt === "Un-Favorite")
+    if (button.alt === "Favorite") {
         button.querySelector("img").src = '/static/img/unpin.png'
-    else
+        button.alt = `Un-Favorite`
+    } else {
         button.querySelector("img").src = '/static/img/pin.png'
+        button.alt = `Favorite`
+    }
 })
 
 listenerOnSelector(".save", "click", e =>{
@@ -35,8 +38,11 @@ listenerOnSelector(".save", "click", e =>{
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({id:id})
     })
-    if (button.alt === "Un-Save")
+    if (button.alt === "Save") {
         button.querySelector("img").src = '/static/img/remove.png'
-    else
+        button.alt = `Un-Save`
+    } else {
         button.querySelector("img").src = '/static/img/add.png'
+        button.alt = `Save`
+    }
 })
