@@ -22,12 +22,13 @@ listenerOnSelector(".pin", "click", e =>{
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({id:id})
     })
-    if (button.alt === "Favorite") {
-        button.querySelector("img").src = '/static/img/unpin.png'
-        button.alt = `Un-Favorite`
+    const img = button.querySelector("img")
+    if (img.alt === "Favorite") {
+        img.src = '/static/img/unpin.png'
+        img.alt = `Un-Favorite`
     } else {
-        button.querySelector("img").src = '/static/img/pin.png'
-        button.alt = `Favorite`
+        img.src = '/static/img/pin.png'
+        img.alt = `Favorite`
     }
 })
 
@@ -38,11 +39,12 @@ listenerOnSelector(".save", "click", e =>{
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({id:id})
     })
-    if (button.alt === "Save") {
-        button.querySelector("img").src = '/static/img/remove.png'
-        button.alt = `Un-Save`
+    const img = button.querySelector("img")
+    if (img.alt === "Save") {
+        img.src = '/static/img/remove.png'
+        img.alt = `Un-Save`
     } else {
-        button.querySelector("img").src = '/static/img/add.png'
-        button.alt = `Save`
+        img.src = '/static/img/add.png'
+        img.alt = `Save`
     }
 })
