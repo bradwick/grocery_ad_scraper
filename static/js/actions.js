@@ -7,6 +7,7 @@ function listenerOnSelector (selector, eventType, myFunction) {
 listenerOnSelector(".hide", "click", e =>{
     const id = e.target.closest("button").dataset.id
     fetch("/hide", {
+        method: "POST",
         body: JSON.stringify({id:id})
     })
     e.target.closest(".deal-row").classList.add("hidden")
@@ -16,6 +17,7 @@ listenerOnSelector(".pin", "click", e =>{
     const button = e.target.closest("button")
     const id = button.dataset.id
     fetch("/favorite", {
+        method: "POST",
         body: JSON.stringify({id:id})
     })
     if (button.alt === "Un-Favorite")
@@ -27,6 +29,7 @@ listenerOnSelector(".pin", "click", e =>{
 listenerOnSelector(".save", "click", e =>{
     const id = e.target.closest("button").dataset.id
     fetch("/add", {
+        method: "POST",
         body: JSON.stringify({id:id})
     })
     if (button.alt === "Un-Save")
