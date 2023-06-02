@@ -11,12 +11,13 @@ main{
     flex-direction: column;
 }
 .update-form{
-    position: absolute;
+    position: fixed;
     top: 2%;
     right: 1%;
     background-color: white;
     border: 1px solid black;
     border-radius: 5px;
+    z-index: 5;
 }
 .deals{
     margin-top: 55px;

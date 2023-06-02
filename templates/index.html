@@ -18,22 +18,14 @@
         <span>{{ deal.item }}</span>
         <span class="flex-row">
             <span>{{ deal.price }}</span>
-            <form action="/hide" method="post">
-                <input type="hidden" name="id" value="{{ deal.id }}">
-                <button class="pad-1 margin-half" type="submit"><img src="{{url_for('static', filename='img/hide.png')}}" alt="Hide"></button>
-            </form>
-            <form action="/favorite" method="post">
-                <input type="hidden" name="id" value="{{ deal.id }}">
-                <button class="pad-1 margin-half" type="submit">{% if deal.favorite -%}<img src="{{url_for('static', filename='img/unpin.png')}}" alt="Un-Favorite">{%- else -%}<img src="{{url_for('static', filename='img/pin.png')}}" alt="Favorite">{%- endif -%}</button>
-            </form>
-            <form action="/add" method="post">
-                <input type="hidden" name="id" value="{{ deal.id }}">
-                <button class="pad-1 margin-half" type="submit">{% if deal.save -%}<img src="{{url_for('static', filename='img/remove.png')}}" alt="Un-Save">{%- else -%}<img src="{{url_for('static', filename='img/add.png')}}" alt="Save">{%- endif -%}</button>
-            </form>
+            <button class="hide pad-1 margin-half" data-id="{{ deal.id }}"><img src="{{url_for('static', filename='img/hide.png')}}" alt="Hide"></button>
+            <button class="pin pad-1 margin-half" data-id="{{ deal.id }}">{% if deal.favorite -%}<img src="{{url_for('static', filename='img/unpin.png')}}" alt="Un-Favorite">{%- else -%}<img src="{{url_for('static', filename='img/pin.png')}}" alt="Favorite">{%- endif -%}</button>
+            <button class="save pad-1 margin-half" data-id="{{ deal.id }}">{% if deal.save -%}<img src="{{url_for('static', filename='img/remove.png')}}" alt="Un-Save">{%- else -%}<img src="{{url_for('static', filename='img/add.png')}}" alt="Save">{%- endif -%}</button>
         </span>
     </div>
     {% endfor %}
 </div>
 </main>
 </body>
+<script src="{{url_for('static', filename='js/actions.js')}}"></script>
 </html>
