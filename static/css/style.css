@@ -72,12 +72,12 @@ main{
 button{
     background: none;
     border: none;
-    transition: transform .5s;
+    transition: transform .2s;
 }
 
 button:hover{
     cursor: pointer;
-    transform: translate(0, 10px);
+    transform: translate(0, -10px);
 }
 
 a img,

@@ -11,7 +11,7 @@ listenerOnSelector(".hide", "click", e =>{
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({id:id})
     })
-    document.querySelector(`#${id}`).classList.add("hidden")
+    document.getElementById(`${id}`).classList.add("hidden")
 })
 
 listenerOnSelector(".pin", "click", e =>{
