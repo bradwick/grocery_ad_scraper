@@ -60,7 +60,7 @@ class DB:
         VALUES (?,?,?,?)
 
         ON CONFLICT(store, item) DO 
-        UPDATE SET current=TRUE, price=?;
+        UPDATE SET current=TRUE, price=?, save=TRUE
         '''
 
         self.cur.execute(sql, ("", item, "", True, ""))
