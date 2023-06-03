@@ -54,6 +54,19 @@ class DB:
         self.cur.execute(sql, (store, item, price, True, price))
         self.con.commit()
 
+    def manual_add(self, item):
+        sql = '''
+        INSERT INTO deals(store, item, price, current) 
+        VALUES (?,?,?,?)
+
+        ON CONFLICT(store, item) DO 
+        UPDATE SET current=TRUE, price=?;
+        '''
+
+        self.cur.execute(sql, ("", item, "", True, ""))
+        self.con.commit()
+
+
     def clean_old_deals(self):
         sql = '''
         DELETE FROM deals

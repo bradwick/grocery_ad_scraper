@@ -47,6 +47,13 @@ def add():
     next_id = db.get_next_visible_deal_id(id)['id']
     return redirect(f"/#{next_id}", code=302)
 
+@app.route('/manual/add', methods=['POST'])
+def manual_add():
+    db = DB()
+    item = request.json.get('item')
+    db.manual_add(item)
+    return 200
+
 
 
 if __name__ == '__main__':
