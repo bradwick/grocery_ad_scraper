@@ -52,7 +52,7 @@ def manual_add():
     db = DB()
     item = request.json.get('item')
     db.manual_add(item)
-    return 200
+    return '', 204
 
 
 
