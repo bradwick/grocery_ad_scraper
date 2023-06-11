@@ -1,59 +1,63 @@
-from flask import Flask,render_template, request, redirect
+from quart import Quart, render_template, request, redirect
 
 from DB import DB
 from main import update_deals, get_existing_deals
 
-app = Flask(__name__)
+app = Quart(__name__)
 
 
 @app.route('/', methods=['GET'])
-def index():
+async def index():
     deals = get_existing_deals()
-    return render_template('index.html', deals=deals)
+    return await render_template('index.html', deals=deals)
+
 
 @app.route('/list', methods=['GET'])
-def list():
+async def list():
     db = DB()
     deals = db.get_saved_deals()
-    return render_template('list.html', deals=deals)
+    return await render_template('list.html', deals=deals)
+
 
 @app.route('/update', methods=['POST'])
-def update():
+async def update():
     update_deals()
     return redirect("/", code=302)
 
+
 @app.route('/hide', methods=['POST'])
-def hide():
+async def hide():
     db = DB()
-    id = request.json.get('id')
+    id = (await request.json).get('id')
     db.toggle_hide(id)
     next_id = db.get_next_visible_deal_id(id)['id']
     return redirect(f"/#{next_id}", code=302)
 
+
 @app.route('/favorite', methods=['POST'])
-def favorite():
+async def favorite():
     db = DB()
-    id = request.json.get('id')
+    id = (await request.json).get('id')
     db.toggle_favorite(id)
     next_id = db.get_next_visible_deal_id(id)['id']
     return redirect(f"/#{next_id}", code=302)
 
 
 @app.route('/add', methods=['POST'])
-def add():
+async def add():
     db = DB()
-    id = request.json.get('id')
+    id = (await request.json).get('id')
     db.toggle_save(id)
     next_id = db.get_next_visible_deal_id(id)['id']
     return redirect(f"/#{next_id}", code=302)
 
+
 @app.route('/manual/add', methods=['POST'])
-def manual_add():
+async def manual_add():
     db = DB()
-    item = request.json.get('item')
+    item = (await request.json).get('item')
     db.manual_add(item)
     return '', 204
-
 
 
 if __name__ == '__main__':
