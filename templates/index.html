@@ -17,9 +17,11 @@
             <button class="cart-button" onclick="window.location.href='/list'">
                 <img src="{{url_for('static', filename='img/cart.png')}}" alt="List">
             </button>
-            <button class="update-button" onclick="window.location.href='/update'">
+            <form action="/update" method="post">
+            <button class="update-button" type="submit">
                 <img src="{{url_for('static', filename='img/refresh.png')}}" alt="Update">
             </button>
+            </form>
         </div>
     </div>
 </header>
