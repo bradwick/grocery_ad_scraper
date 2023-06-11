@@ -1,36 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Deal Finder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deal List</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
 </head>
+
 <body>
+<header class="sticky-header">
+    <div class="header-content">
+        <h1>Deal Finder</h1>
+        <div class="header-buttons">
+            <button class="cart-button" onclick="window.location.href='/list'">
+                <img src="{{url_for('static', filename='img/cart.png')}}" alt="List">
+            </button>
+            <button class="update-button" onclick="window.location.href='/update'">
+                <img src="{{url_for('static', filename='img/refresh.png')}}" alt="Update">
+            </button>
+        </div>
+    </div>
+</header>
+
 <main>
-    <div class="update-form flex-row">
-    <form class="flex-row" action="/update" method="post">
-        <button type="submit"><img src="{{url_for('static', filename='img/refresh.png')}}" alt="Update"></button>
-        <a href="/" ><img src="{{url_for('static', filename='img/home.png')}}" alt="Home"></a>
-    </form>
-    <form action="/remove-all-saved" method="post">
-        <button type="submit"><img src="{{url_for('static', filename='img/trash.png')}}" alt="Clear"></button>
-    </form>
+    <div class="deals">
+        {% for deal in deals %}
+        <div class="deal-row" id="{{ deal.id }}">
+            <div class="deal-info">
+                <span class="store">{{ deal.store }}</span>
+                <span class="item">{{ deal.item }}</span>
+                <span class="price">{{ deal.price }}</span>
+            </div>
+            <div class="deal-actions">
+                <button class="action-button hide" data-id="{{ deal.id }}">
+                    <img src="{{url_for('static', filename='img/hide.png')}}" alt="Hide">
+                </button>
+                <button class="action-button pin" data-id="{{ deal.id }}">
+                    <img src="{{url_for('static', filename='img/pin.png')}}" alt="Pin">
+                </button>
+                <button class="action-button save" data-id="{{ deal.id }}">
+                    <img src="{{url_for('static', filename='img/save.png')}}" alt="Save">
+                </button>
+            </div>
+        </div>
+        {% endfor %}
     </div>
-<div class="flex-col deals">
-    {% for deal in deals %}
-    <div class="flex-row margin-half deal-row" id="{{ deal.id }}">
-        <span class="margin-left store">{{ deal.store }}</span>
-        <span>{{ deal.item }}</span>
-        <span class="flex-row">
-            <span>{{ deal.price }}</span>
-            <form action="/add" method="post">
-                <input type="hidden" name="id" value="{{ deal.id }}">
-                <button class="pad-1 margin-half" type="submit"><img src="{{url_for('static', filename='img/remove.png')}}" alt="Remove"></button>
-            </form>
-        </span>
-    </div>
-    {% endfor %}
-</div>
 </main>
+
+<script src="{{url_for('static', filename='js/actions.js')}}"></script>
 </body>
+
 </html>
