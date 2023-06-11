@@ -1,93 +1,100 @@
-body{
-    background-color: #777;
+body {
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', Arial, sans-serif;
 }
-main{
-    font-family: Verdana, sans-serif;
-    width: 90%;
-    margin: auto;
+
+.sticky-header {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.flex-col{
+
+.header-content {
     display: flex;
-    flex-direction: column;
-}
-.update-form{
-    position: fixed;
-    top: 2%;
-    right: 1%;
-    background-color: white;
-    border: 1px solid black;
-    border-radius: 5px;
-    z-index: 5;
-}
-.deals{
-    margin-top: 55px;
-    background-color: white;
-    border: 1px solid black;
-    border-radius: 5px;
-}
-.flex-row{
-    display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 20px;
+    justify-content: space-between;
 }
 
-.deal-row{
-    position: relative;
-}
-
-.deal-row::after{
-    content: "";
-    background: rgb(0,0,0);
-    background: linear-gradient(79deg, rgba(0,0,0,0) 5%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 95%);
-    width: 90%;
-    height: 1px;
-    position: absolute;
-    bottom: 0;
-    left: 5%;
-}
-
-.margin-1{
-    margin: 1rem;
-}
-.margin-left{
-    margin-left: 1rem;
-}
-.margin-half{
-    margin: .5rem;
-}
-.pad-1{
-    padding: 1rem;
-}
-.favorite{
-    background-color: #fde603;
-}
-.store{
-    font-weight: bold;
-}
-.store img{
-    width: 20px;
-}
-
-button{
+.cart-button {
     background: none;
     border: none;
-    transition: transform .1s;
-}
-
-button:hover{
     cursor: pointer;
-    transform: translate(0, -5px);
 }
 
-a img,
-button img{
+.update-button img,
+.cart-button img{
     width: 50px;
 }
 
-.hidden{
-    display: none;
+main {
+    padding: 20px;
 }
-.hidden:after{
-    display: none;
+
+.update-form {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.update-button,
+.cart-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.deals {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+}
+
+.deal-row {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.deal-info {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.store {
+    font-weight: bold;
+}
+
+.item {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.price {
+    font-weight: bold;
+}
+
+.deal-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.action-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.action-button img {
+    width: 40px;
 }

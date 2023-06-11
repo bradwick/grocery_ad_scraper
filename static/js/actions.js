@@ -1,50 +1,80 @@
-function listenerOnSelector (selector, eventType, myFunction) {
-    document.querySelectorAll(selector).forEach((item) => {
-        item.addEventListener(eventType, (event) => myFunction(event))
-    })
-}
-
-listenerOnSelector(".hide", "click", e =>{
-    const id = e.target.closest("button").dataset.id
+// Function to handle hiding a deal
+function hideDeal(dealId) {
+    // Implement hiding logic here
+    const dealElement = document.getElementById(dealId);
+    dealElement.style.display = 'none';
     fetch("/hide", {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({id:id})
-    })
-    document.getElementById(`${id}`).classList.add("hidden")
-})
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: dealId }),
+    });
+}
 
-listenerOnSelector(".pin", "click", e =>{
-    const button = e.target.closest("button")
-    const id = button.dataset.id
+// Function to handle pinning a deal
+function pinDeal(dealId) {
+    // Implement pinning logic here
+    const dealElement = document.getElementById(dealId);
+    dealElement.classList.toggle('pinned');
     fetch("/favorite", {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({id:id})
-    })
-    const img = button.querySelector("img")
-    if (img.alt === "Favorite") {
-        img.src = '/static/img/unpin.png'
-        img.alt = `Un-Favorite`
-    } else {
-        img.src = '/static/img/pin.png'
-        img.alt = `Favorite`
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: dealId }),
+    });
+    const pin = dealElement.querySelector(".pin img")
+    if (dealElement.classList.contains("pinned")){
+        pin.src='/static/img/unpin.png'
+    }else{
+        pin.src='/static/img/pin.png'
     }
-})
+}
 
-listenerOnSelector(".save", "click", e =>{
-    const id = e.target.closest("button").dataset.id
+// Function to handle saving a deal
+function saveDeal(dealId) {
+    // Implement saving logic here
+    const dealElement = document.getElementById(dealId);
+    dealElement.classList.toggle('saved');
     fetch("/add", {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({id:id})
-    })
-    const img = button.querySelector("img")
-    if (img.alt === "Save") {
-        img.src = '/static/img/remove.png'
-        img.alt = `Un-Save`
-    } else {
-        img.src = '/static/img/add.png'
-        img.alt = `Save`
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: dealId }),
+    });
+    const save = dealElement.querySelector(".save img")
+    if (dealElement.classList.contains("saved")){
+        save.src='/static/img/remove.png'
+    }else{
+        save.src='/static/img/save.png'
     }
-})
+}
+
+// Function to handle initializing the actions for each deal
+function initializeDealActions() {
+    // Get all action buttons
+    const actionButtons = document.querySelectorAll('.action-button');
+
+    // Add click event listeners to each button
+    actionButtons.forEach((button) => {
+        const dealId = button.getAttribute('data-id');
+
+        button.addEventListener('click', (event) => {
+            const buttonType = button.classList[1];
+
+            switch (buttonType) {
+                case 'hide':
+                    hideDeal(dealId);
+                    break;
+                case 'pin':
+                    pinDeal(dealId);
+                    break;
+                case 'save':
+                    saveDeal(dealId);
+                    break;
+                default:
+                    break;
+            }
+        });
+    });
+}
+
+// Initialize deal actions when the DOM is loaded
+document.addEventListener('DOMContentLoaded', initializeDealActions);
+
