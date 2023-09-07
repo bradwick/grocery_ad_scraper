@@ -24,7 +24,7 @@
             </button>
             </form>
         </div>
-        <input @input.debounce="const search = $el.value.toLowerCase()
+        <input class="filter_input" @input.debounce="const search = $el.value.toLowerCase()
             for(const row in rowData){
                 if(!rowData[row].store.toLowerCase().includes(search)
                 || !rowData[row].item.toLowerCase().includes(search)){
