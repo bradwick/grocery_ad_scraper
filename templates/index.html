@@ -25,17 +25,8 @@
             </form>
         </div>
         <input class="filter_input" type="text"
-           x-on:input.debounce="const search = $el.value.toLowerCase()
-           console.log(search)
-            for(const row in rowData){
-                let match = false;
-                if(!rowData[row].store.toLowerCase().includes(search)
-                || !rowData[row].item.toLowerCase().includes(search)){
-                    match = true;
-                }
-                rowData[row].filtered = ! match;
-            }
-        ">
+           @input.debounce="console.log($el);"
+        >
     </div>
 </header>
 
