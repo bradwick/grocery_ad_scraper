@@ -28,9 +28,12 @@
            @input.debounce="const search = $el.value.toLowerCase()
            console.log(search)
             for(const row in rowData){
+                let match = false;
                 if(!rowData[row].store.toLowerCase().includes(search)
                 || !rowData[row].item.toLowerCase().includes(search)){
-                rowData[row].filtered = true;
+                    match = true;
+                }
+                rowData[row].filtered = ! match;
             }
         ">
     </div>
