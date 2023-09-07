@@ -24,7 +24,16 @@
             </button>
             </form>
         </div>
-        <input class="filter_input" type="text" @input="console.log('hello')"
+        <input class="filter_input" type="text"
+               @input="const search = $el.value.toLowerCase()
+            for(const row in rowData){
+                let match = false;
+                if(!rowData[row].store.toLowerCase().includes(search)
+                || !rowData[row].item.toLowerCase().includes(search)){
+                    match = true;
+                }
+                rowData[row].filtered = ! match;
+            }"
         >
     </div>
 </header>
