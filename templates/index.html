@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deal Finder</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js">
     <script src="{{url_for('static', filename='js/actions.js')}}"></script>
 </head>
 
@@ -23,13 +24,25 @@
             </button>
             </form>
         </div>
+        <input @input.debounce="const search = $el.value.toLowerCase()
+            for(const row in rowData){
+                if(!rowData[row].store.toLowerCase().includes(search)
+                || !rowData[row].item.toLowerCase().includes(search)){
+                rowData[row].filtered = true;
+            }
+        ">
     </div>
 </header>
 
 <main>
-    <div class="deals">
+    <div class="deals"
+    x-data="{rowData:[]}">
         {% for deal in deals %}
-        <div class="deal-row" id="{{ deal.id }}">
+        <div class="deal-row" id="{{ deal.id }}"
+             x-data="{store: '{{ deal.store }}', item: '{{ deal.item }}, filtered: false}"
+             x-init="rowData['{{ deal.id }}'] = $data"
+             x-show="!filtered"
+        >
             <div class="deal-info">
                 <span class="store">{{ deal.store }}</span>
                 <span class="item">{{ deal.item }}</span>
