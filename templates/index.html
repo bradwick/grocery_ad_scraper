@@ -24,7 +24,9 @@
             </button>
             </form>
         </div>
-        <input class="filter_input" @input.debounce="const search = $el.value.toLowerCase()
+        <input class="filter_input"
+           @input.debounce="const search = $el.value.toLowerCase()
+           console.log(search)
             for(const row in rowData){
                 if(!rowData[row].store.toLowerCase().includes(search)
                 || !rowData[row].item.toLowerCase().includes(search)){
@@ -39,7 +41,7 @@
     x-data="{rowData:[]}">
         {% for deal in deals %}
         <div class="deal-row" id="{{ deal.id }}"
-             x-data="{ 'store': `{{ deal.store }}`, 'item': `{{ deal.item }}`, 'filtered': false }"
+             x-data="{ store: `{{ deal.store }}`, item: `{{ deal.item }}`, filtered: false }"
              x-init="rowData['{{ deal.id }}'] = $data"
              x-show="!filtered"
         >
