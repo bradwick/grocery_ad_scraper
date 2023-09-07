@@ -10,7 +10,7 @@
     <script src="{{url_for('static', filename='js/actions.js')}}"></script>
 </head>
 
-<body>
+<body x-data="{rowData:[]}">
 <header class="sticky-header">
     <div class="header-content">
         <h1>Deal Finder</h1>
@@ -24,15 +24,13 @@
             </button>
             </form>
         </div>
-        <input class="filter_input" type="text"
-           @input.debounce="console.log($el);"
+        <input class="filter_input" type="text" @input="console.log('hello')"
         >
     </div>
 </header>
 
 <main>
-    <div class="deals"
-    x-data="{rowData:[]}">
+    <div class="deals">
         {% for deal in deals %}
         <div class="deal-row" id="{{ deal.id }}"
              x-data="{ store: `{{ deal.store }}`, item: `{{ deal.item }}`, filtered: false }"
