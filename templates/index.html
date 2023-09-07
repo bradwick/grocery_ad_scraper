@@ -39,7 +39,7 @@
     x-data="{rowData:[]}">
         {% for deal in deals %}
         <div class="deal-row" id="{{ deal.id }}"
-             x-data="{store: {{ deal.store|tojson }}, item: {{ deal.item}|tojson }}, filtered: false}"
+             x-data="{store: {{ deal.store|tojson }}, item: {{ deal.item|tojson }}, filtered: false}"
              x-init="rowData['{{ deal.id }}'] = $data"
              x-show="!filtered"
         >
