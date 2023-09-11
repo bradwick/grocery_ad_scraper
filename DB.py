@@ -139,7 +139,7 @@ class DB:
             hide INT default FALSE,
             save INT default FALSE,
             current INT default FALSE,
-            time ANY not null, 
+            time ANY, 
             
             UNIQUE(store, item),
             
