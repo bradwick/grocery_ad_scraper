@@ -1,3 +1,5 @@
+import json
+
 import quart.flask_patch
 
 import time
@@ -21,7 +23,7 @@ async def index():
 @app.route('/json', methods=['GET'])
 async def existing_deals():
     deals = get_existing_deals()
-    return deals
+    return json.dumps( [dict(ix) for ix in deals] )
 
 
 @app.route('/list', methods=['GET'])
@@ -34,7 +36,7 @@ async def list():
 async def list_json():
     db = DB()
     deals = db.get_saved_deals()
-    return deals
+    return json.dumps( [dict(ix) for ix in deals] )
 
 @app.route('/last-update', methods=['GET'])
 async def last_update():
