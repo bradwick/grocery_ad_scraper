@@ -1,5 +1,6 @@
 # This is a sample Python script.
 import re
+import string
 
 import requests as requests
 from bs4 import BeautifulSoup
@@ -11,6 +12,13 @@ from DB import DB
 
 
 deals = []
+
+
+printable_chars = string.printable
+
+
+def __clean_string(input):
+    return ''.join(filter(lambda x: x in printable_chars, input))
 
 def get_items_publix(promo_id, x):
     global deals
@@ -24,7 +32,7 @@ def get_items_publix(promo_id, x):
     for unit in units:
         title = unit.findChild("div",{"class":"title"}).text.strip()
         deal = unit.findChild("div",{"class":"deal"}).text.strip()
-        deals.append({"store":"Publix", "title":title, "deal":deal})
+        deals.append({"store":"Publix", "title":__clean_string(title), "deal":deal})
 
 
 def scrape_publix():
@@ -75,7 +83,7 @@ def get_items_food_city(page_count):
         deal = card.findChild("span",{"class":"tile-item__product__price"}).attrs['data-price']
         title = card.findChild("div",{"class":"tile-item__product__title"}).get_text(" ",strip=True)
 
-        deals.append({"store":"FoodCity", "title":title, "deal":deal})
+        deals.append({"store":"FoodCity", "title":__clean_string(title), "deal":deal})
 
 
 def scrape_food_city():
