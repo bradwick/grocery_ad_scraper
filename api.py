@@ -27,7 +27,7 @@ async def list():
     return await render_template('list.html', deals=deals)
 
 @app.route('/list/json', methods=['GET'])
-async def list():
+async def list_json():
     db = DB()
     deals = db.get_saved_deals()
     return deals
