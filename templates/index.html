@@ -22,7 +22,7 @@
             <button class="update-button" type="submit">
                 <img src="{{url_for('static', filename='img/refresh.png')}}" alt="Update">
             </button>
-            <span x-data="{lastUpdated:{}}" x-init="lastUpdated = await(await fetch('/last-update')).json()" x-text="`Last Updated ${lastUpdated.number} ${lastUpdated.unit} ago."></span>
+<!--            <span x-data="{lastUpdated:{}}" x-init="lastUpdated = await(await fetch('/last-update')).json()" x-text="`Last Updated ${lastUpdated.number} ${lastUpdated.unit} ago."></span>-->
             </form>
         </div>
         <input class="filter_input" type="text" @input="console.log($el.value);
