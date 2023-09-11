@@ -47,10 +47,10 @@ async def last_update():
 
     cur_time = time.time()
 
-    diff = time.mktime(datetime_object.timetuple()) - cur_time
+    diff = cur_time - time.mktime(datetime_object.timetuple())
 
     if diff < 60:
-        return {'number': diff, 'unit': 'seconds'}
+        return {'number': round(diff), 'unit': 'seconds'}
     elif diff < 60*60:
         return {'number': round(diff/60), 'unit': 'minutes'}
     elif diff < 60*60*24:
