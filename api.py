@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 
 from quart import Quart, render_template, request, redirect
 
@@ -13,6 +14,11 @@ async def index():
     deals = get_existing_deals()
     return await render_template('index.html', deals=deals)
 
+@app.route('/json', methods=['GET'])
+async def existing_deals():
+    deals = get_existing_deals()
+    return deals
+
 
 @app.route('/list', methods=['GET'])
 async def list():
@@ -20,23 +26,33 @@ async def list():
     deals = db.get_saved_deals()
     return await render_template('list.html', deals=deals)
 
+@app.route('/list/json', methods=['GET'])
+async def list():
+    db = DB()
+    deals = db.get_saved_deals()
+    return deals
+
 @app.route('/last-update', methods=['GET'])
 async def last_update():
     db = DB()
     timestamp_row = db.get_latest_timestamp()
-    timestamp = timestamp_row.time
+    print(timestamp_row['time'])
+    timestamp = timestamp_row['time']
+
+    datetime_object = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
+
     cur_time = time.time()
 
-    diff = (cur_time - timestamp) * 1000
+    diff = time.mktime(datetime_object.timetuple()) - cur_time
 
     if diff < 60:
         return {'number': diff, 'unit': 'seconds'}
     elif diff < 60*60:
-        return {'number': diff/60, 'unit': 'minutes'}
+        return {'number': round(diff/60), 'unit': 'minutes'}
     elif diff < 60*60*24:
-        return {'number': diff/(60*60), 'unit': 'hours'}
+        return {'number': round(diff/(60*60)), 'unit': 'hours'}
     else:
-        return {'number': diff/(60*60*24), 'unit': 'days'}
+        return {'number': round(diff/(60*60*24)), 'unit': 'days'}
 
 
 

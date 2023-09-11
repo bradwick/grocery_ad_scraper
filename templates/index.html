@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deal Finder</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="{{url_for('static', filename='js/actions.js')}}"></script>
 </head>
 
@@ -14,7 +15,7 @@
 <header class="sticky-header">
     <div class="header-content">
         <h1>Deal Finder</h1>
-        <div class="header-buttons">
+        <div class="flex items-center gap-5">
             <button class="cart-button" onclick="window.location.href='/list'">
                 <img src="{{url_for('static', filename='img/cart.png')}}" alt="List">
             </button>
@@ -22,10 +23,12 @@
             <button class="update-button" type="submit">
                 <img src="{{url_for('static', filename='img/refresh.png')}}" alt="Update">
             </button>
-            <span x-data="{lastUpdated:{}}" x-init="lastUpdated = await(await fetch('/last-update')).json()" x-text="`Last Updated ${lastUpdated.number} ${lastUpdated.unit} ago."></span>
+            <span class="text-sm text-gray-400" x-data="{lastUpdated:{}}" x-init="lastUpdated = await(await fetch('/last-update')).json()" x-text="`Last Updated ${lastUpdated.number} ${lastUpdated.unit} ago.`"></span>
             </form>
         </div>
-        <input class="filter_input" type="text" @input="console.log($el.value);
+        <div class="flex gap-2 items-center">
+        <label for="filterInput">Filter: </label>
+        <input id="filterInput" class="text-xl p-3 ring-1 ring-blue-500 rounded-lg" type="text" @input="console.log($el.value);
         const search=$el.value.toLowerCase();
         for(const row in rowData){
         let match = false;
@@ -34,6 +37,7 @@
         match = true;
         }
         rowData[row].filtered = ! match;}">
+        </div>
     </div>
 </header>
 
