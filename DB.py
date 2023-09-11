@@ -3,7 +3,7 @@ import sqlite3
 
 class DB:
     def __init__(self):
-        self.con = sqlite3.connect("./grocery.db")
+        self.con = sqlite3.connect("/db/grocery.db")
         self.con.row_factory = sqlite3.Row
         self.cur = self.con.cursor()
 
@@ -139,7 +139,7 @@ class DB:
             hide INT default FALSE,
             save INT default FALSE,
             current INT default FALSE,
-            time ANY not null 
+            time ANY not null, 
             
             UNIQUE(store, item),
             
