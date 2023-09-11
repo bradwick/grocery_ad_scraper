@@ -55,8 +55,11 @@ def scrape_publix():
 
     for thread in threads:
         thread.start()
+        print('Starting Publix Thread')
+
     for thread in threads:
         thread.join()
+        print('Stopping Publix Thread')
 
 
 def get_items_food_city(page_count):
@@ -95,8 +98,11 @@ def scrape_food_city():
 
     for thread in threads:
         thread.start()
+        print('Starting Food City Thread')
+
     for thread in threads:
         thread.join()
+        print('Stopping Food City Thread')
 
 
 
@@ -141,6 +147,7 @@ def update_deals():
 
     for thread in threads:
         thread.start()
+        print('Starting Store Thread')
     for thread in threads:
         thread.join()
 

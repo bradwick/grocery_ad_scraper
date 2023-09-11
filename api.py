@@ -1,3 +1,5 @@
+import time
+
 from quart import Quart, render_template, request, redirect
 
 from DB import DB
@@ -17,6 +19,25 @@ async def list():
     db = DB()
     deals = db.get_saved_deals()
     return await render_template('list.html', deals=deals)
+
+@app.route('/last-update', methods=['GET'])
+async def last_update():
+    db = DB()
+    timestamp_row = db.get_latest_timestamp()
+    timestamp = timestamp_row.time
+    cur_time = time.time()
+
+    diff = (cur_time - timestamp) * 1000
+
+    if diff < 60:
+        return {'number': diff, 'unit': 'seconds'}
+    elif diff < 60*60:
+        return {'number': diff/60, 'unit': 'minutes'}
+    elif diff < 60*60*24:
+        return {'number': diff/(60*60), 'unit': 'hours'}
+    else:
+        return {'number': diff/(60*60*24), 'unit': 'days'}
+
 
 
 @app.route('/update', methods=['POST'])

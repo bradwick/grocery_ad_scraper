@@ -3,7 +3,7 @@ import sqlite3
 
 class DB:
     def __init__(self):
-        self.con = sqlite3.connect("/db/grocery.db")
+        self.con = sqlite3.connect("./grocery.db")
         self.con.row_factory = sqlite3.Row
         self.cur = self.con.cursor()
 
@@ -41,6 +41,16 @@ class DB:
         '''
 
         return self.cur.execute(sql).fetchall()
+
+    def get_latest_timestamp(self):
+        sql='''
+        SELECT time
+        FROM deals
+        ORDER BY time DESC
+        LIMIT 1
+        '''
+
+        return self.cur.execute(sql).fetchone()
 
     def insert(self, store, item, price):
         sql = '''
@@ -129,12 +139,19 @@ class DB:
             hide INT default FALSE,
             save INT default FALSE,
             current INT default FALSE,
+            time ANY not null 
             
             UNIQUE(store, item),
             
             constraint deals_pk
                 primary key (id)
         );
+        CREATE TRIGGER [UPDATE_DT]
+            AFTER UPDATE ON deals FOR EACH ROW
+            WHEN OLD.time = NEW.time OR OLD.time IS NULL
+        BEGIN
+            UPDATE deals SET time=CURRENT_TIMESTAMP WHERE id=NEW.id;
+        END;
         '''
         self.cur.execute(sql)
 
