@@ -1,7 +1,11 @@
+import quart.flask_patch
+
 import time
 from datetime import datetime
 
 from quart import Quart, render_template, request, redirect
+
+from flask_apscheduler import APScheduler
 
 from DB import DB
 from main import update_deals, get_existing_deals
@@ -95,6 +99,14 @@ async def manual_add():
     item = (await request.json).get('item')
     db.manual_add(item)
     return '', 204
+
+
+scheduler = APScheduler()
+
+@scheduler.task('cron', id='auto_update', minute='0', hour='5')
+async def auto_update():
+    await update()
+
 
 
 if __name__ == '__main__':
