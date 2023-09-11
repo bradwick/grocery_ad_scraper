@@ -146,6 +146,9 @@ class DB:
             constraint deals_pk
                 primary key (id)
         );
+        '''
+        self.cur.execute(sql)
+        sql='''
         CREATE TRIGGER [UPDATE_DT]
             AFTER UPDATE ON deals FOR EACH ROW
             WHEN OLD.time = NEW.time OR OLD.time IS NULL
